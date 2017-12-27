@@ -1,0 +1,4 @@
+## YAML Template.
+test_index:
+    path: /test/firsttesttempl13
+    defaults: {_controller: AppBundle:Pruebas:test}

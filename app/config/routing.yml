@@ -1,0 +1,11 @@
+first:
+    resource: "@FirstBundle/Resources/config/routing.yml"
+    prefix:   /
+
+pers1_routes:
+    resource: "@AppBundle/Resources/config/routing.yml"
+    prefix: /
+
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation

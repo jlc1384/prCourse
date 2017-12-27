@@ -1,0 +1,7 @@
+{% extends "::layout13.html.twig" %}
+{% block body %}
+    <h1>this is an example</h1>
+    {{ parent() }}
+    
+    {{ include('FirstBundle:testTwigExtends:ejPart.html.twig') }}
+{% endblock %}

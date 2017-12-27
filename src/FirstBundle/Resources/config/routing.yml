@@ -1,0 +1,12 @@
+first_homepage:
+    path:     /
+    defaults: { _controller: FirstBundle:Default:index }
+    
+test_twig_extends:
+    path:     /test-twig_extend
+    defaults: { _controller: FirstBundle:Default:testTwigExtends }
+    
+test_twig_filter:
+    path:     /test_twig_filter
+    defaults: { _controller: FirstBundle:Default:testTwigFilter }
+
