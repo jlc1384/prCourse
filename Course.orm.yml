@@ -1,0 +1,24 @@
+FirstBundle\Entity\Course:
+    type: entity
+    table: null
+    repositoryClass: FirstBundle\Repository\CursoRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: string
+            length: 255
+        startDate:
+            type: date
+        endDate:
+            type: date
+        price:
+            type: float
+        description:
+            type: string
+            length: 255
+    lifecycleCallbacks: {  }
