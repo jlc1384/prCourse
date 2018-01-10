@@ -115,16 +115,62 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
                 return array (  '_controller' => 'FirstBundle\\Controller\\DefaultController::testTwigExtendsAction',  '_route' => 'test_twig_extends',);
             }
 
-            // test_twig_filter
-            if ($pathinfo === '/test_twig_filter') {
-                return array (  '_controller' => 'FirstBundle\\Controller\\DefaultController::testTwigFilterAction',  '_route' => 'test_twig_filter',);
+            if (0 === strpos($pathinfo, '/test_')) {
+                // test_twig_filter
+                if ($pathinfo === '/test_twig_filter') {
+                    return array (  '_controller' => 'FirstBundle\\Controller\\DefaultController::testTwigFilterAction',  '_route' => 'test_twig_filter',);
+                }
+
+                // test_add_action
+                if ($pathinfo === '/test_add_action') {
+                    return array (  '_controller' => 'FirstBundle\\Controller\\DefaultController::createCursoAction',  '_route' => 'test_add_action',);
+                }
+
             }
 
-            // test_index
-            if ($pathinfo === '/test/firsttesttempl13') {
-                return array (  '_controller' => 'AppBundle\\Controller\\PruebasController::testAction',  '_route' => 'test_index',);
+        }
+
+        // test_listcourses_action
+        if ($pathinfo === '/listcourses') {
+            return array (  '_controller' => 'FirstBundle\\Controller\\DefaultController::listCoursesAction',  '_route' => 'test_listcourses_action',);
+        }
+
+        // test_updatecourses_action
+        if (0 === strpos($pathinfo, '/updatecourse') && preg_match('#^/updatecourse/(?P<id>[^/]++)/(?P<name>[^/]++)/(?P<description>[^/]++)/(?P<price>[^/]++)$#s', $pathinfo, $matches)) {
+            return $this->mergeDefaults(array_replace($matches, array('_route' => 'test_updatecourses_action')), array (  '_controller' => 'FirstBundle\\Controller\\DefaultController::updateCourseAction',));
+        }
+
+        // test_deletecourses_action
+        if (0 === strpos($pathinfo, '/deletecourse') && preg_match('#^/deletecourse/(?P<id>[^/]++)$#s', $pathinfo, $matches)) {
+            return $this->mergeDefaults(array_replace($matches, array('_route' => 'test_deletecourses_action')), array (  '_controller' => 'FirstBundle\\Controller\\DefaultController::deleteCourseAction',));
+        }
+
+        // test_find_action
+        if ($pathinfo === '/find') {
+            return array (  '_controller' => 'FirstBundle\\Controller\\DefaultController::findCourseAction',  '_route' => 'test_find_action',);
+        }
+
+        if (0 === strpos($pathinfo, '/native')) {
+            // test_nativesql_action
+            if ($pathinfo === '/nativesql') {
+                return array (  '_controller' => 'FirstBundle\\Controller\\DefaultController::nativeSQLAction',  '_route' => 'test_nativesql_action',);
             }
 
+            // test_nativedql_action
+            if ($pathinfo === '/nativedql') {
+                return array (  '_controller' => 'FirstBundle\\Controller\\DefaultController::nativeDQLAction',  '_route' => 'test_nativedql_action',);
+            }
+
+        }
+
+        // test_querybuilder_action
+        if ($pathinfo === '/qbuilder') {
+            return array (  '_controller' => 'FirstBundle\\Controller\\DefaultController::queryBuilderAction',  '_route' => 'test_querybuilder_action',);
+        }
+
+        // test_index
+        if ($pathinfo === '/test/firsttesttempl13') {
+            return array (  '_controller' => 'AppBundle\\Controller\\PruebasController::testAction',  '_route' => 'test_index',);
         }
 
         // homepage
