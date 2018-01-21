@@ -1,0 +1,10 @@
+{# empty Twig template #}
+<h2>Add Course</h2>
+{{form_start(form, {'action':'', 'method':'POST'})}}
+    {% if data != null and status != null %}
+        <h3>{{ status }}</h3>
+        {{ dump(data) }}
+    {% endif %}
+    {{ form_errors(form) }}
+    {{ form_widget(form) }}
+{{form_end(form)}}

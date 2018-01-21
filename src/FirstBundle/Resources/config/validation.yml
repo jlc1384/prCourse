@@ -1,0 +1,25 @@
+FirstBundle\Entity\Course:
+    properties:
+        "name":
+            - NotBlank: {"message": "Field required"}
+            - Length:
+                min: 10
+                minMessage: "The course name must have at least 10 characters"
+        "description":
+            - NotBlank: {"message": "Field required"}
+            - Length:
+                min: 10
+                minMessage: "The course description must have at least 10 characters"
+        #price:
+        #    - NotBlank: {"message": "Field required"}
+        #    - Range:
+        #        min: 0
+        #        minMessage: "The price of the course must be greater or equal than 0"
+        #startDate:
+        #    - NotBlank: {"message": "Field required"}
+        #    - Date: ~
+        #    - GreaterThanOrEqual: today
+        #endDate:
+        #    - NotBlank: {"message": "Field required"}
+        #    - Date: ~
+        #    - GreaterThanOrEqual: startDate
