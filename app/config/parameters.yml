@@ -2,7 +2,7 @@
 parameters:
     database_host: localhost
     database_port: null
-    database_name: prcursodb
+    database_name: blogddbb
     database_user: prcurso
     database_password: prcurso
     mailer_transport: smtp
