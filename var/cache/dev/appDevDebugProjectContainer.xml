@@ -17,6 +17,7 @@
       <parameter key="SensioFrameworkExtraBundle">Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle</parameter>
       <parameter key="AppBundle">AppBundle\AppBundle</parameter>
       <parameter key="FirstBundle">FirstBundle\FirstBundle</parameter>
+      <parameter key="BlogBundle">BlogBundle\BlogBundle</parameter>
       <parameter key="DebugBundle">Symfony\Bundle\DebugBundle\DebugBundle</parameter>
       <parameter key="WebProfilerBundle">Symfony\Bundle\WebProfilerBundle\WebProfilerBundle</parameter>
       <parameter key="SensioDistributionBundle">Sensio\Bundle\DistributionBundle\SensioDistributionBundle</parameter>
@@ -26,7 +27,7 @@
     <parameter key="kernel.container_class">appDevDebugProjectContainer</parameter>
     <parameter key="database_host">localhost</parameter>
     <parameter key="database_port">null</parameter>
-    <parameter key="database_name">prcursodb</parameter>
+    <parameter key="database_name">blogdb</parameter>
     <parameter key="database_user">prcurso</parameter>
     <parameter key="database_password">prcurso</parameter>
     <parameter key="mailer_transport">smtp</parameter>
@@ -1512,7 +1513,7 @@
       <argument type="collection">
         <argument type="service">
           <service class="Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider" public="false">
-            <argument>5a5b8cfe99ce34.90497111</argument>
+            <argument>5a6deebb84eef1.35149563</argument>
           </service>
         </argument>
       </argument>
@@ -1641,7 +1642,7 @@
         <argument type="service">
           <service class="Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener" public="false">
             <argument type="service" id="security.token_storage"/>
-            <argument>5a5b8cfe99ce34.90497111</argument>
+            <argument>5a6deebb84eef1.35149563</argument>
             <argument type="service" id="monolog.logger.security" on-invalid="null"/>
             <argument type="service" id="security.authentication.manager"/>
           </service>
@@ -1944,7 +1945,7 @@
         <argument key="driver">pdo_mysql</argument>
         <argument key="host">localhost</argument>
         <argument key="port">null</argument>
-        <argument key="dbname">prcursodb</argument>
+        <argument key="dbname">blogdb</argument>
         <argument key="user">prcurso</argument>
         <argument key="password">prcurso</argument>
         <argument key="charset">UTF8</argument>
@@ -2033,6 +2034,7 @@
           <call method="setEntityNamespaces">
             <argument type="collection">
               <argument key="FirstBundle">FirstBundle\Entity</argument>
+              <argument key="BlogBundle">BlogBundle\Entity</argument>
             </argument>
           </call>
           <call method="setMetadataCacheImpl">
@@ -2052,6 +2054,7 @@
                     <service class="Doctrine\ORM\Mapping\Driver\SimplifiedYamlDriver" public="false">
                       <argument type="collection">
                         <argument key="C:\xampp\php\prCourse\src\FirstBundle\Resources\config\doctrine">FirstBundle\Entity</argument>
+                        <argument key="C:\xampp\php\prCourse\src\BlogBundle\Resources\config\doctrine">BlogBundle\Entity</argument>
                       </argument>
                       <call method="setGlobalBasename">
                         <argument>mapping</argument>
@@ -2059,6 +2062,20 @@
                     </service>
                   </argument>
                   <argument>FirstBundle\Entity</argument>
+                </call>
+                <call method="addDriver">
+                  <argument type="service">
+                    <service class="Doctrine\ORM\Mapping\Driver\SimplifiedYamlDriver" public="false">
+                      <argument type="collection">
+                        <argument key="C:\xampp\php\prCourse\src\FirstBundle\Resources\config\doctrine">FirstBundle\Entity</argument>
+                        <argument key="C:\xampp\php\prCourse\src\BlogBundle\Resources\config\doctrine">BlogBundle\Entity</argument>
+                      </argument>
+                      <call method="setGlobalBasename">
+                        <argument>mapping</argument>
+                      </call>
+                    </service>
+                  </argument>
+                  <argument>BlogBundle\Entity</argument>
                 </call>
               </service>
             </argument>
@@ -2462,6 +2479,10 @@
       <call method="addPath">
         <argument>C:\xampp\php\prCourse\src\FirstBundle/Resources/views</argument>
         <argument>First</argument>
+      </call>
+      <call method="addPath">
+        <argument>C:\xampp\php\prCourse\src\BlogBundle/Resources/views</argument>
+        <argument>Blog</argument>
       </call>
       <call method="addPath">
         <argument>C:\xampp\php\prCourse\vendor\symfony\symfony\src\Symfony\Bundle\DebugBundle/Resources/views</argument>

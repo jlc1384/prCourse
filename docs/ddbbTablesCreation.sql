@@ -1,5 +1,5 @@
-DROP DATABASE IF EXISTS blogddbb;
-CREATE DATABASE IF NOT EXISTS blogddbb;
+DROP DATABASE IF EXISTS blogdb;
+CREATE DATABASE IF NOT EXISTS blogdb;
 
 
 DROP TABLE if EXISTS entry_tag;
@@ -75,8 +75,8 @@ VALUES('jlago','Minho3jlc','Jesus','Lago Castillo','admin','j.lagocastillo@gmail
 
 INSERT INTO entry (user_id,category_id,title,content,status) 
 VALUES(1,1,'PHP entry','This is for php entry development','public'),
-(2,2,'Java entry','This is for java entry development from Filemon','public')
-(1,4,'Symfony entry','This is for symfony entry development','public')
+(2,2,'Java entry','This is for java entry development from Filemon','public'),
+(1,4,'Symfony entry','This is for symfony entry development','public'),
 (3,1,'PHP entry Mortadelo','This is for php entry development from Mortadelo','public');
 
 INSERT INTO entry_tag (entry_id,tag_id) VALUES (1,1),(1,4),(1,5),(3,1),(3,4),(4,1),(4,4),(4,5),(2,2);  
