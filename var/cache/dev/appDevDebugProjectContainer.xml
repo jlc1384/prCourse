@@ -28,8 +28,8 @@
     <parameter key="database_host">localhost</parameter>
     <parameter key="database_port">null</parameter>
     <parameter key="database_name">blogdb</parameter>
-    <parameter key="database_user">prcurso</parameter>
-    <parameter key="database_password">prcurso</parameter>
+    <parameter key="database_user">root</parameter>
+    <parameter key="database_password">Minho3jlc</parameter>
     <parameter key="mailer_transport">smtp</parameter>
     <parameter key="mailer_host">127.0.0.1</parameter>
     <parameter key="mailer_user">null</parameter>
@@ -1513,7 +1513,7 @@
       <argument type="collection">
         <argument type="service">
           <service class="Symfony\Component\Security\Core\Authentication\Provider\AnonymousAuthenticationProvider" public="false">
-            <argument>5a6deebb84eef1.35149563</argument>
+            <argument>5a7727a55653a6.89394478</argument>
           </service>
         </argument>
       </argument>
@@ -1642,7 +1642,7 @@
         <argument type="service">
           <service class="Symfony\Component\Security\Http\Firewall\AnonymousAuthenticationListener" public="false">
             <argument type="service" id="security.token_storage"/>
-            <argument>5a6deebb84eef1.35149563</argument>
+            <argument>5a7727a55653a6.89394478</argument>
             <argument type="service" id="monolog.logger.security" on-invalid="null"/>
             <argument type="service" id="security.authentication.manager"/>
           </service>
@@ -1946,8 +1946,8 @@
         <argument key="host">localhost</argument>
         <argument key="port">null</argument>
         <argument key="dbname">blogdb</argument>
-        <argument key="user">prcurso</argument>
-        <argument key="password">prcurso</argument>
+        <argument key="user">root</argument>
+        <argument key="password">Minho3jlc</argument>
         <argument key="charset">UTF8</argument>
         <argument key="driverOptions" type="collection"/>
         <argument key="defaultTableOptions" type="collection"/>

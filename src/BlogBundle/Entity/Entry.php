@@ -2,6 +2,8 @@
 
 namespace BlogBundle\Entity;
 
+use \Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * Entry
  */
@@ -41,7 +43,12 @@ class Entry
      * @var \BlogBundle\Entity\Category
      */
     private $category;
-
+    
+    protected $entryTag;
+    
+    public function __construct() {
+        $this->entryTag = new ArrayCollection();
+    }
 
     /**
      * Get id
@@ -195,6 +202,18 @@ class Entry
     public function getCategory()
     {
         return $this->category;
+    }
+    
+    public function addEntryTag(\BlogBundle\Entity\Tag $tag) {
+        $this->entryTag[] = $tag;
+        return $this;
+    }
+    
+    public function getEntryTag() 
+    {
+        echo "AAAAAAAAAAAAAAAAAAAA ".print_r($this->entryTag,true)."</br>";
+        echo "BBBBBBBBBBBBBBBBBBBB ".$this->entryTag."</br>";
+        return $this->entryTag;
     }
 }
 

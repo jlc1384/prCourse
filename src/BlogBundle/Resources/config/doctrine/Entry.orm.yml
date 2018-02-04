@@ -71,5 +71,5 @@ BlogBundle\Entity\Entry:
         entryTag:
             targetEntity: EntryTag
             mappedBy: entry
-            cascade: { persist }
+            cascade: ["persist"]
     lifecycleCallbacks: {  }
