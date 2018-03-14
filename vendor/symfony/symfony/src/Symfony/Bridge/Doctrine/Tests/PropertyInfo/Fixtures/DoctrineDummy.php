@@ -41,7 +41,7 @@ class DoctrineDummy
     public $bar;
 
     /**
-     * @ManyToMany(targetEntity="DoctrineRelation", indexBy="guid")
+     * @ManyToMany(targetEntity="DoctrineRelation", indexBy="rguid")
      */
     protected $indexedBar;
 
@@ -56,6 +56,16 @@ class DoctrineDummy
     private $time;
 
     /**
+     * @Column(type="time_immutable")
+     */
+    private $timeImmutable;
+
+    /**
+     * @Column(type="dateinterval")
+     */
+    private $dateInterval;
+
+    /**
      * @Column(type="json_array")
      */
     private $json;
@@ -64,6 +74,16 @@ class DoctrineDummy
      * @Column(type="simple_array")
      */
     private $simpleArray;
+
+    /**
+     * @Column(type="float")
+     */
+    private $float;
+
+    /**
+     * @Column(type="decimal", precision=10, scale=2)
+     */
+    private $decimal;
 
     /**
      * @Column(type="boolean")
@@ -79,6 +99,11 @@ class DoctrineDummy
      * @Column(type="custom_foo")
      */
     private $customFoo;
+
+    /**
+     * @Column(type="bigint")
+     */
+    private $bigint;
 
     public $notMapped;
 }

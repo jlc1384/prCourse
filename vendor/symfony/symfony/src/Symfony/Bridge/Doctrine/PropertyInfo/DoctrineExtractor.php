@@ -27,9 +27,6 @@ use Symfony\Component\PropertyInfo\Type;
  */
 class DoctrineExtractor implements PropertyListExtractorInterface, PropertyTypeExtractorInterface
 {
-    /**
-     * @var ClassMetadataFactory
-     */
     private $classMetadataFactory;
 
     public function __construct(ClassMetadataFactory $classMetadataFactory)
@@ -50,7 +47,17 @@ class DoctrineExtractor implements PropertyListExtractorInterface, PropertyTypeE
             return;
         }
 
-        return array_merge($metadata->getFieldNames(), $metadata->getAssociationNames());
+        $properties = array_merge($metadata->getFieldNames(), $metadata->getAssociationNames());
+
+        if ($metadata instanceof ClassMetadataInfo && class_exists('Doctrine\ORM\Mapping\Embedded') && $metadata->embeddedClasses) {
+            $properties = array_filter($properties, function ($property) {
+                return false === strpos($property, '.');
+            });
+
+            $properties = array_merge($properties, array_keys($metadata->embeddedClasses));
+        }
+
+        return $properties;
     }
 
     /**
@@ -88,7 +95,8 @@ class DoctrineExtractor implements PropertyListExtractorInterface, PropertyTypeE
 
                 if (isset($associationMapping['indexBy'])) {
                     $indexProperty = $associationMapping['indexBy'];
-                    $typeOfField = $metadata->getTypeOfField($indexProperty);
+                    $subMetadata = $this->classMetadataFactory->getMetadataFor($associationMapping['targetEntity']);
+                    $typeOfField = $subMetadata->getTypeOfField($indexProperty);
 
                     $collectionKeyType = $this->getPhpType($typeOfField);
                 }
@@ -104,6 +112,10 @@ class DoctrineExtractor implements PropertyListExtractorInterface, PropertyTypeE
             ));
         }
 
+        if ($metadata instanceof ClassMetadataInfo && class_exists('Doctrine\ORM\Mapping\Embedded') && isset($metadata->embeddedClasses[$property])) {
+            return array(new Type(Type::BUILTIN_TYPE_OBJECT, false, $metadata->embeddedClasses[$property]['class']));
+        }
+
         if ($metadata->hasField($property)) {
             $typeOfField = $metadata->getTypeOfField($property);
             $nullable = $metadata instanceof ClassMetadataInfo && $metadata->isNullable($property);
@@ -115,6 +127,15 @@ class DoctrineExtractor implements PropertyListExtractorInterface, PropertyTypeE
                 case 'vardatetime':
                 case DBALType::TIME:
                     return array(new Type(Type::BUILTIN_TYPE_OBJECT, $nullable, 'DateTime'));
+
+                case 'date_immutable':
+                case 'datetime_immutable':
+                case 'datetimetz_immutable':
+                case 'time_immutable':
+                    return array(new Type(Type::BUILTIN_TYPE_OBJECT, $nullable, 'DateTimeImmutable'));
+
+                case 'dateinterval':
+                    return array(new Type(Type::BUILTIN_TYPE_OBJECT, $nullable, 'DateInterval'));
 
                 case DBALType::TARRAY:
                     return array(new Type(Type::BUILTIN_TYPE_ARRAY, $nullable, null, true));
@@ -173,17 +194,17 @@ class DoctrineExtractor implements PropertyListExtractorInterface, PropertyTypeE
     {
         switch ($doctrineType) {
             case DBALType::SMALLINT:
-            case DBALType::BIGINT:
             case DBALType::INTEGER:
                 return Type::BUILTIN_TYPE_INT;
 
             case DBALType::FLOAT:
-            case DBALType::DECIMAL:
                 return Type::BUILTIN_TYPE_FLOAT;
 
+            case DBALType::BIGINT:
             case DBALType::STRING:
             case DBALType::TEXT:
             case DBALType::GUID:
+            case DBALType::DECIMAL:
                 return Type::BUILTIN_TYPE_STRING;
 
             case DBALType::BOOLEAN:
@@ -195,9 +216,6 @@ class DoctrineExtractor implements PropertyListExtractorInterface, PropertyTypeE
 
             case DBALType::OBJECT:
                 return Type::BUILTIN_TYPE_OBJECT;
-
-            default:
-                return;
         }
     }
 }

@@ -11,61 +11,44 @@
 
 namespace Symfony\Bundle\FrameworkBundle\Tests\DependencyInjection\Compiler;
 
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Bundle\FrameworkBundle\DependencyInjection\Compiler\SerializerPass;
 
 /**
  * Tests for the SerializerPass class.
  *
+ * @group legacy
+ *
  * @author Javier Lopez <f12loalf@gmail.com>
  */
-class SerializerPassTest extends \PHPUnit_Framework_TestCase
+class SerializerPassTest extends TestCase
 {
+    /**
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessage You must tag at least one service as "serializer.normalizer" to use the "serializer" service
+     */
     public function testThrowExceptionWhenNoNormalizers()
     {
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder', array('hasDefinition', 'findTaggedServiceIds'));
-
-        $container->expects($this->once())
-            ->method('hasDefinition')
-            ->with('serializer')
-            ->will($this->returnValue(true));
-
-        $container->expects($this->once())
-            ->method('findTaggedServiceIds')
-            ->with('serializer.normalizer')
-            ->will($this->returnValue(array()));
-
-        $this->setExpectedException('RuntimeException');
+        $container = new ContainerBuilder();
+        $container->register('serializer');
 
         $serializerPass = new SerializerPass();
         $serializerPass->process($container);
     }
 
+    /**
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessage You must tag at least one service as "serializer.encoder" to use the "serializer" service
+     */
     public function testThrowExceptionWhenNoEncoders()
     {
-        $definition = $this->getMock('Symfony\Component\DependencyInjection\Definition');
-        $container = $this->getMock(
-            'Symfony\Component\DependencyInjection\ContainerBuilder',
-            array('hasDefinition', 'findTaggedServiceIds', 'getDefinition')
-        );
-
-        $container->expects($this->once())
-            ->method('hasDefinition')
-            ->with('serializer')
-            ->will($this->returnValue(true));
-
-        $container->expects($this->any())
-            ->method('findTaggedServiceIds')
-            ->will($this->onConsecutiveCalls(
-                    array('n' => array('serializer.normalizer')),
-                    array()
-              ));
-
-        $container->expects($this->once())
-            ->method('getDefinition')
-            ->will($this->returnValue($definition));
-
-        $this->setExpectedException('RuntimeException');
+        $container = new ContainerBuilder();
+        $container->register('serializer')
+            ->addArgument(array())
+            ->addArgument(array());
+        $container->register('normalizer')->addTag('serializer.normalizer');
 
         $serializerPass = new SerializerPass();
         $serializerPass->process($container);
@@ -73,34 +56,22 @@ class SerializerPassTest extends \PHPUnit_Framework_TestCase
 
     public function testServicesAreOrderedAccordingToPriority()
     {
-        $services = array(
-            'n3' => array('tag' => array()),
-            'n1' => array('tag' => array('priority' => 200)),
-            'n2' => array('tag' => array('priority' => 100)),
-        );
+        $container = new ContainerBuilder();
 
-        $expected = array(
-           new Reference('n1'),
-           new Reference('n2'),
-           new Reference('n3'),
-       );
-
-        $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder', array('findTaggedServiceIds'));
-
-        $container->expects($this->any())
-            ->method('findTaggedServiceIds')
-            ->will($this->returnValue($services));
+        $definition = $container->register('serializer')->setArguments(array(null, null));
+        $container->register('n2')->addTag('serializer.normalizer', array('priority' => 100))->addTag('serializer.encoder', array('priority' => 100));
+        $container->register('n1')->addTag('serializer.normalizer', array('priority' => 200))->addTag('serializer.encoder', array('priority' => 200));
+        $container->register('n3')->addTag('serializer.normalizer')->addTag('serializer.encoder');
 
         $serializerPass = new SerializerPass();
+        $serializerPass->process($container);
 
-        $method = new \ReflectionMethod(
-          'Symfony\Bundle\FrameworkBundle\DependencyInjection\Compiler\SerializerPass',
-          'findAndSortTaggedServices'
+        $expected = array(
+            new Reference('n1'),
+            new Reference('n2'),
+            new Reference('n3'),
         );
-        $method->setAccessible(true);
-
-        $actual = $method->invoke($serializerPass, 'tag', $container);
-
-        $this->assertEquals($expected, $actual);
+        $this->assertEquals($expected, $definition->getArgument(0));
+        $this->assertEquals($expected, $definition->getArgument(1));
     }
 }
