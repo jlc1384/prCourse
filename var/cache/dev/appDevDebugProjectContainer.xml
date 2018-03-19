@@ -23,6 +23,7 @@
       <parameter key="WebProfilerBundle">Symfony\Bundle\WebProfilerBundle\WebProfilerBundle</parameter>
       <parameter key="SensioDistributionBundle">Sensio\Bundle\DistributionBundle\SensioDistributionBundle</parameter>
       <parameter key="SensioGeneratorBundle">Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle</parameter>
+      <parameter key="WebServerBundle">Symfony\Bundle\WebServerBundle\WebServerBundle</parameter>
     </parameter>
     <parameter key="kernel.bundles_metadata" type="collection">
       <parameter key="FrameworkBundle" type="collection">
@@ -94,6 +95,11 @@
         <parameter key="parent">null</parameter>
         <parameter key="path">/home/jlago/Netbeansprojects/prCourse/vendor/sensio/generator-bundle</parameter>
         <parameter key="namespace">Sensio\Bundle\GeneratorBundle</parameter>
+      </parameter>
+      <parameter key="WebServerBundle" type="collection">
+        <parameter key="parent">null</parameter>
+        <parameter key="path">/home/jlago/Netbeansprojects/prCourse/vendor/symfony/symfony/src/Symfony/Bundle/WebServerBundle</parameter>
+        <parameter key="namespace">Symfony\Bundle\WebServerBundle</parameter>
       </parameter>
     </parameter>
     <parameter key="kernel.charset">UTF-8</parameter>
@@ -477,6 +483,11 @@
       <parameter key="console.command.symfony_bridge_twig_command_debugcommand">twig.command.debug</parameter>
       <parameter key="console.command.symfony_bundle_twigbundle_command_lintcommand">twig.command.lint</parameter>
       <parameter key="console.command.sensiolabs_security_command_securitycheckercommand">console.command.sensiolabs_security_command_securitycheckercommand</parameter>
+      <parameter key="console.command.symfony_bundle_webserverbundle_command_serverruncommand">web_server.command.server_run</parameter>
+      <parameter key="console.command.symfony_bundle_webserverbundle_command_serverstartcommand">web_server.command.server_start</parameter>
+      <parameter key="console.command.symfony_bundle_webserverbundle_command_serverstopcommand">web_server.command.server_stop</parameter>
+      <parameter key="console.command.symfony_bundle_webserverbundle_command_serverstatuscommand">web_server.command.server_status</parameter>
+      <parameter key="console.command.symfony_bundle_webserverbundle_command_serverlogcommand">web_server.command.server_log</parameter>
     </parameter>
     <parameter key="console.lazy_command.ids" type="collection">
       <parameter key="console.command.about">true</parameter>
@@ -498,6 +509,11 @@
       <parameter key="security.command.user_password_encoder">true</parameter>
       <parameter key="twig.command.debug">true</parameter>
       <parameter key="twig.command.lint">true</parameter>
+      <parameter key="web_server.command.server_run">true</parameter>
+      <parameter key="web_server.command.server_start">true</parameter>
+      <parameter key="web_server.command.server_stop">true</parameter>
+      <parameter key="web_server.command.server_status">true</parameter>
+      <parameter key="web_server.command.server_log">true</parameter>
     </parameter>
   </parameters>
   <services>
@@ -3494,12 +3510,46 @@
       <tag name="console.command"/>
       <argument type="service" id="sensio_distribution.security_checker"/>
     </service>
+    <service id="web_server.command.server_run" class="Symfony\Bundle\WebServerBundle\Command\ServerRunCommand" public="false">
+      <tag name="console.command" command="server:run"/>
+      <argument>/home/jlago/Netbeansprojects/prCourse/public</argument>
+      <argument>dev</argument>
+      <call method="setName">
+        <argument>server:run</argument>
+      </call>
+    </service>
+    <service id="web_server.command.server_start" class="Symfony\Bundle\WebServerBundle\Command\ServerStartCommand" public="false">
+      <tag name="console.command" command="server:start"/>
+      <argument>/home/jlago/Netbeansprojects/prCourse/public</argument>
+      <argument>dev</argument>
+      <call method="setName">
+        <argument>server:start</argument>
+      </call>
+    </service>
+    <service id="web_server.command.server_stop" class="Symfony\Bundle\WebServerBundle\Command\ServerStopCommand" public="false">
+      <tag name="console.command" command="server:stop"/>
+      <call method="setName">
+        <argument>server:stop</argument>
+      </call>
+    </service>
+    <service id="web_server.command.server_status" class="Symfony\Bundle\WebServerBundle\Command\ServerStatusCommand" public="false">
+      <tag name="console.command" command="server:status"/>
+      <call method="setName">
+        <argument>server:status</argument>
+      </call>
+    </service>
+    <service id="web_server.command.server_log" class="Symfony\Bundle\WebServerBundle\Command\ServerLogCommand" public="false">
+      <tag name="console.command" command="server:log"/>
+      <call method="setName">
+        <argument>server:log</argument>
+      </call>
+    </service>
     <service id="service_locator.sr6ctxe" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection"/>
     </service>
     <service id="console.command_loader" class="Symfony\Component\Console\CommandLoader\ContainerCommandLoader" public="true">
-      <argument type="service" id="service_locator.suy7rc5"/>
+      <argument type="service" id="service_locator.vqs3tsi"/>
       <argument type="collection">
         <argument key="about">console.command.about</argument>
         <argument key="assets:install">console.command.assets_install</argument>
@@ -3520,9 +3570,14 @@
         <argument key="security:encode-password">security.command.user_password_encoder</argument>
         <argument key="debug:twig">twig.command.debug</argument>
         <argument key="lint:twig">twig.command.lint</argument>
+        <argument key="server:run">web_server.command.server_run</argument>
+        <argument key="server:start">web_server.command.server_start</argument>
+        <argument key="server:stop">web_server.command.server_stop</argument>
+        <argument key="server:status">web_server.command.server_status</argument>
+        <argument key="server:log">web_server.command.server_log</argument>
       </argument>
     </service>
-    <service id="service_locator.suy7rc5" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id="service_locator.vqs3tsi" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="console.command.about" type="service" id="console.command.about"/>
@@ -3544,6 +3599,11 @@
         <argument key="security.command.user_password_encoder" type="service" id="security.command.user_password_encoder"/>
         <argument key="twig.command.debug" type="service" id="twig.command.debug"/>
         <argument key="twig.command.lint" type="service" id="twig.command.lint"/>
+        <argument key="web_server.command.server_log" type="service" id="web_server.command.server_log"/>
+        <argument key="web_server.command.server_run" type="service" id="web_server.command.server_run"/>
+        <argument key="web_server.command.server_start" type="service" id="web_server.command.server_start"/>
+        <argument key="web_server.command.server_status" type="service" id="web_server.command.server_status"/>
+        <argument key="web_server.command.server_stop" type="service" id="web_server.command.server_stop"/>
       </argument>
     </service>
     <service id="service_locator.o0cobhk" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">

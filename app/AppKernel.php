@@ -18,13 +18,15 @@ class AppKernel extends Kernel
             new AppBundle\AppBundle(),
             new FirstBundle\FirstBundle(),
             new BlogBundle\BlogBundle(),
+            new Symfony\Bundle\DebugBundle\DebugBundle(),
+            new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle(),
+            new Sensio\Bundle\DistributionBundle\SensioDistributionBundle()
+
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
-            $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
-            $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
-            $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
+            $bundles[] = new Symfony\Bundle\WebServerBundle\WebServerBundle();
         }
 
         return $bundles;

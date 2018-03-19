@@ -211,8 +211,6 @@ class Entry
     
     public function getEntryTag() 
     {
-        echo "AAAAAAAAAAAAAAAAAAAA ".print_r($this->entryTag,true)."</br>";
-        echo "BBBBBBBBBBBBBBBBBBBB ".$this->entryTag."</br>";
         return $this->entryTag;
     }
 }
